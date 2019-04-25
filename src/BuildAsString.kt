@@ -2,7 +2,7 @@ object BuildAString {
     var value = ""
 
     val truc = buildString {
-        "bold"
+        "bold23"
     }
 
 }
