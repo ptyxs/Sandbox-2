@@ -43,7 +43,7 @@ fun <T> makeString(list: List<T>, delim: String): String {
 
         return when {
             list.isEmpty() -> str // plus rien dans la liste à ajouter : on renvoie la string telle quelle
-            // on au premier élément de la liste, la string est encore vide : on ne met pas de délimiteur
+            // on est au premier élément de la liste, la string est encore vide : on ne met pas de délimiteur
             str.isEmpty() -> makeStringHelper(str.plus(list.head()), list.tail())
             else -> makeStringHelper(str.plus("$delim${list.head()}"), list.tail())
         }
