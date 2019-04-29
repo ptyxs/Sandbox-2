@@ -1,10 +1,11 @@
+fun <T> List<T>.head(): T =
+    if (this.isEmpty())
+        throw IllegalArgumentException("head called on empty list")
+    else
+        this[0]
+
 fun <T> List<T>.tail(): List<T> =
-    if (isEmpty()) throw IllegalArgumentException("tail called on empty list")
-    else subList(1, count())
-
-// sublist is a view, safe with non mutable list
-
-fun main() {
-    val list = listOf<Int>(1,2,78)
-    println(list.tail())
-}
+    if (this.isEmpty())
+        throw IllegalArgumentException("tail called on empty list")
+    else
+        this.subList(1, this.size)
