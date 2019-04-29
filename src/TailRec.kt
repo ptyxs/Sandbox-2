@@ -37,9 +37,24 @@ fun <T> string(list: List<T>): String {
     return stringHelper("", list)
 }
 
+// comme string mais avec délimiteur
+fun <T> makeString(list: List<T>, delim: String): String {
+    fun makeStringHelper(str: String, list: List<T>): String {
+
+        return when {
+            list.isEmpty() -> str // plus rien dans la liste à ajouter : on renvoie la string telle quelle
+            // on au premier élément de la liste, la string est encore vide : on ne met pas de délimiteur
+            str.isEmpty() -> makeStringHelper(str.plus(list.head()), list.tail())
+            else -> makeStringHelper(str.plus("$delim${list.head()}"), list.tail())
+        }
+    }
+    return makeStringHelper("", list)
+}
+
 fun main() {
     println(add(5, 3)) // 8
     println(sumFirstInts(100_000)) // 5_000_050_000
     println(sumFirstInts2(100_000)) // 5_000_050_000
-    println(string(listOf(1,2)))
+    println(string(listOf(1, 2)))
+    println(makeString(listOf(1, 3, 3), "**"))
 }
