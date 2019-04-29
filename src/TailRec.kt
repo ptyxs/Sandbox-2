@@ -39,7 +39,7 @@ fun <T> string(list: List<T>): String {
 
 // comme string mais avec délimiteur
 fun <T> makeString(list: List<T>, delim: String): String {
-    fun makeStringHelper(str: String, list: List<T>): String {
+    tailrec fun makeStringHelper(str: String, list: List<T>): String {
 
         return when {
             list.isEmpty() -> str // plus rien dans la liste à ajouter : on renvoie la string telle quelle
@@ -51,10 +51,31 @@ fun <T> makeString(list: List<T>, delim: String): String {
     return makeStringHelper("", list)
 }
 
+// dans Kotlin, fold() est un foldLeft dont la liste est le receveur
+fun <T, U> foldLeft(list: List<T>, acc: U, f: (U, T) -> U): U {
+    tailrec fun foldLeftHelper(list: List<T>, acc: U): U {
+        return if (list.isEmpty()) acc
+        else foldLeftHelper(list.tail(), f(acc, list.head()))
+    }
+    return foldLeftHelper(list, acc)
+}
+
+fun sum(list: List<Int>) = foldLeft(list, 0, Int::plus)
+
+fun newString(list: List<Char>) = foldLeft(list, "", String::plus)
+
+fun <T> newMakeString(list: List<T>, delim: String) =
+    foldLeft(list, "") { s, t -> if (s.isEmpty()) "$t" else "$s$delim$t" }
+
 fun main() {
     println(add(5, 3)) // 8
     println(sumFirstInts(100_000)) // 5_000_050_000
     println(sumFirstInts2(100_000)) // 5_000_050_000
     println(string(listOf(1, 2)))
-    println(makeString(listOf(1, 3, 3), "**"))
+    println(makeString(listOf(1, 3, 3), "**")) // 1**3**3
+
+    println(sum(listOf<Int>(6, 4))) // 10
+    println(newString(listOf('a', 'z', '2'))) // az2
+    println(newMakeString(listOf(1, 2, 3), "**"))
+    println((String::plus)("ok",3))
 }
